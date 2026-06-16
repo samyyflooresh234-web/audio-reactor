@@ -66,6 +66,26 @@ document.getElementById("fullscreen");
 const panel =
 document.getElementById("panel");
 
+const colorMode =
+document.getElementById(
+"colorMode"
+);
+
+const color1 =
+document.getElementById(
+"color1"
+);
+
+const color2 =
+document.getElementById(
+"color2"
+);
+
+const showPanel =
+document.getElementById(
+"showPanel"
+);
+
 let audioCtx;
 let analyser;
 let audio;
@@ -82,15 +102,30 @@ let beatEnergy = 0;
 let beatPulse = 0;
 
 hideUIButton.addEventListener(
-"click",
-()=>{
+    "click",
+    ()=>{
 
-panel.classList.toggle(
-"hiddenPanel"
-);
+    panel.style.display=
+    "none";
 
-}
-);
+    showPanel.style.display=
+    "block";
+
+    }
+    );
+
+    showPanel.addEventListener(
+    "click",
+    ()=>{
+
+    panel.style.display=
+    "block";
+
+    showPanel.style.display=
+    "none";
+
+    }
+    );
 
 fullscreenBtn.addEventListener(
 "click",
@@ -211,52 +246,74 @@ audio.play();
 );
 
 function getThemeColor(
-i,
-total
-){
+    i,
+    total
+    ){
 
-const theme =
-themeSelect.value;
+    if(
+    colorMode.value==="single"
+    ){
 
-if(
-theme==="matrix"
-){
+    return color1.value;
 
-return
-"rgb(0,255,0)";
+    }
 
-}
+    if(
+    colorMode.value==="alternate"
+    ){
 
-if(
-theme==="cyber"
-){
+    return
+    i%2===0
+    ?
+    color1.value
+    :
+    color2.value;
 
-return
-`hsl(${
-280+
-(i/total)*80
-},100%,60%)`;
+    }
 
-}
+    const p=
+    i/total;
 
-if(
-theme==="ocean"
-){
+    const r=
+    Math.round(
+    parseInt(
+    color1.value.slice(1,3),
+    16
+    )*(1-p)+
+    parseInt(
+    color2.value.slice(1,3),
+    16
+    )*p
+    );
 
-return
-`hsl(${
-180+
-(i/total)*60
-},100%,60%)`;
+    const g=
+    Math.round(
+    parseInt(
+    color1.value.slice(3,5),
+    16
+    )*(1-p)+
+    parseInt(
+    color2.value.slice(3,5),
+    16
+    )*p
+    );
 
-}
+    const b=
+    Math.round(
+    parseInt(
+    color1.value.slice(5,7),
+    16
+    )*(1-p)+
+    parseInt(
+    color2.value.slice(5,7),
+    16
+    )*p
+    );
 
-return
-`hsl(${
-(i/total)*360
-},100%,60%)`;
+    return
+    `rgb(${r},${g},${b})`;
 
-}
+    }
 
 function applyGlow(
 color
@@ -992,7 +1049,7 @@ function drawRing(
     0,
     0,
     ${
-    trail/100
+    trail/300
     }
     )`;
 
