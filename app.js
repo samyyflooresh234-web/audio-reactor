@@ -54,6 +54,11 @@ document.getElementById("bassBoost");
 const trebleBoostSlider =
 document.getElementById("trebleBoost");
 
+const centerSizeSlider =
+document.getElementById(
+"centerSize"
+);
+
 const bgImageInput =
 document.getElementById("bgImage");
 
@@ -590,8 +595,18 @@ function rebuildParticles(){
     i*0.15;
 
     const r=
+
+    Number(
+    centerSizeSlider.value
+    )
+
+    +
+
     t*
-    2+
+    2
+
+    +
+
     bands.bass;
 
     const x=
@@ -827,9 +842,15 @@ function drawRing(
     const cy=
     canvas.height/2;
 
-    const radius=
-    140+
-    beatPulse;
+const radius=
+
+Number(
+centerSizeSlider.value
+)
+
++
+
+beatPulse;
 
     const sensitivity=
     Number(
@@ -1001,6 +1022,183 @@ function drawRing(
 
     }
 
+    function drawSpiral2(
+        bands
+        ){
+
+        const cx=
+        canvas.width/2;
+
+        const cy=
+        canvas.height/2;
+
+        const centerSize=
+
+        Number(
+        centerSizeSlider.value
+        );
+
+        const speed=
+
+        Number(
+        speedSlider.value
+        );
+
+        const arms=4;
+
+        const time=
+
+        performance.now()*0.00025*
+        speed;
+
+        for(
+
+        let i=0;
+
+        i<particles.length;
+
+        i++
+
+        ){
+
+        const arm=
+
+        i%arms;
+
+        const armOffset=
+
+        (
+        Math.PI*2
+        /
+        arms
+        )
+        *
+        arm;
+
+        const progress=
+
+        i/
+        particles.length;
+
+        const radius=
+
+        centerSize
+
+        +
+
+        progress*
+        (
+        350+
+        bands.bass
+        );
+
+        const angle=
+
+        armOffset
+
+        +
+
+        radius*
+        0.03
+
+        +
+
+        time
+
+        +
+
+        bands.mids*
+        0.0008;
+
+        const x=
+
+        cx+
+
+        Math.cos(
+        angle
+        )
+
+        *
+
+        radius;
+
+        const y=
+
+        cy+
+
+        Math.sin(
+        angle
+        )
+
+        *
+
+        radius;
+
+        const color=
+
+        getThemeColor(
+        i,
+        particles.length
+        );
+
+        applyGlow(
+        color
+        );
+
+        ctx.fillStyle=
+        color;
+
+        ctx.beginPath();
+
+        ctx.arc(
+
+        x,
+        y,
+
+        2
+
+        +
+
+        bands.highs/
+        70
+
+        +
+
+        beatPulse/
+        10,
+
+        0,
+        Math.PI*2
+
+        );
+
+        ctx.fill();
+
+        }
+
+        ctx.shadowBlur=0;
+
+        ctx.fillStyle=
+        "black";
+
+        ctx.beginPath();
+
+        ctx.arc(
+
+        cx,
+        cy,
+
+        centerSize,
+
+        0,
+        Math.PI*2
+
+        );
+
+        ctx.fill();
+
+        }
+
     function detectBeat(
     bands
     ){
@@ -1144,6 +1342,14 @@ function drawRing(
     );
 
     break;
+
+    case "spiral2":
+
+        drawSpiral2(
+        bands
+        );
+
+        break;
 
     case "blackhole":
 
