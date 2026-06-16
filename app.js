@@ -252,71 +252,120 @@ audio.play();
 
 function getThemeColor(
     i,
-    total
+    total,
+    bands=null
     ){
 
-    if(
-    colorMode.value==="single"
-    ){
+    const c1=
+    color1.value;
 
-    return color1.value;
-
-    }
-
-    if(
-    colorMode.value==="alternate"
-    ){
-
-    return
-    i%2===0
-    ?
-    color1.value
-    :
+    const c2=
     color2.value;
 
+    const mode=
+    colorMode.value;
+
+    if(
+    mode==="single"
+    ){
+
+    return c1;
+
     }
 
-    const p=
+    const r1=
+    parseInt(
+    c1.slice(1,3),
+    16
+    );
+
+    const g1=
+    parseInt(
+    c1.slice(3,5),
+    16
+    );
+
+    const b1=
+    parseInt(
+    c1.slice(5,7),
+    16
+    );
+
+    const r2=
+    parseInt(
+    c2.slice(1,3),
+    16
+    );
+
+    const g2=
+    parseInt(
+    c2.slice(3,5),
+    16
+    );
+
+    const b2=
+    parseInt(
+    c2.slice(5,7),
+    16
+    );
+
+    let p=0;
+
+    if(
+    mode==="gradient"
+    ){
+
+    p=
     i/total;
+
+    }
+
+    else if(
+    mode==="trails"
+    ){
+
+    p=
+    (i%2);
+
+    }
+
+    else if(
+    mode==="audio"
+    ){
+
+    if(
+    bands
+    ){
+
+    p=
+    Math.min(
+    1,
+    bands.highs/500
+    );
+
+    }
+
+    }
 
     const r=
     Math.round(
-    parseInt(
-    color1.value.slice(1,3),
-    16
-    )*(1-p)+
-    parseInt(
-    color2.value.slice(1,3),
-    16
-    )*p
+    r1+
+    (r2-r1)*p
     );
 
     const g=
     Math.round(
-    parseInt(
-    color1.value.slice(3,5),
-    16
-    )*(1-p)+
-    parseInt(
-    color2.value.slice(3,5),
-    16
-    )*p
+    g1+
+    (g2-g1)*p
     );
 
     const b=
     Math.round(
-    parseInt(
-    color1.value.slice(5,7),
-    16
-    )*(1-p)+
-    parseInt(
-    color2.value.slice(5,7),
-    16
-    )*p
+    b1+
+    (b2-b1)*p
     );
 
-    return
-    `rgb(${r},${g},${b})`;
+    return `rgb(${r},${g},${b})`;
 
     }
 
@@ -542,7 +591,8 @@ function rebuildParticles(){
     const color =
     getThemeColor(
     i,
-    particles.length
+    particles.length,
+    bands
     );
 
     applyGlow(
@@ -646,7 +696,8 @@ r;
     const color=
     getThemeColor(
     i,
-    particles.length
+    particles.length,
+    bands
     );
 
     ctx.shadowBlur=0;
@@ -1178,7 +1229,8 @@ beatPulse;
 
         getThemeColor(
         i,
-        particles.length
+        particles.length,
+        bands
         );
 
         applyGlow(
