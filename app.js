@@ -631,6 +631,28 @@ function rebuildParticles(){
     particles.length
     );
 
+    ctx.shadowBlur=0;
+
+    ctx.fillStyle="black";
+
+    ctx.beginPath();
+
+    ctx.arc(
+
+    cx,
+    cy,
+
+    Number(
+    centerSizeSlider.value
+    ),
+
+    0,
+    Math.PI*2
+
+    );
+
+    ctx.fill();
+
     applyGlow(
     color
     );
