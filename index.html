@@ -2,18 +2,16 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Audio Reactor 2.0</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Audio Reactor 2.5</title>
 
 <link rel="stylesheet" href="style.css">
-
 </head>
 <body>
 
-<div id="ui">
+<div id="panel">
 
-<h2>Audio Reactor 2.0</h2>
+<h2>Audio Reactor</h2>
 
 <input
 type="file"
@@ -34,11 +32,65 @@ Spectrum Ring
 Galaxy
 </option>
 
+<option value="network">
+Neural Network
+</option>
+
 <option value="fireworks">
 Fireworks
 </option>
 
 </select>
+
+<select id="theme">
+
+<option value="rainbow">
+Rainbow
+</option>
+
+<option value="cyber">
+Cyberpunk
+</option>
+
+<option value="matrix">
+Matrix
+</option>
+
+<option value="ocean">
+Ocean
+</option>
+
+</select>
+
+<label>
+
+Sensitivity
+
+<input
+type="range"
+id="sensitivity"
+min="1"
+max="6"
+value="2">
+
+</label>
+
+<label>
+
+Particles
+
+<input
+type="range"
+id="particles"
+min="100"
+max="1000"
+value="300">
+
+</label>
+
+<button id="fullscreen">
+Fullscreen
+</button>
 
 </div>
 
