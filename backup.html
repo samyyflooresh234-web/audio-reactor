@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Audio Reactor</title>
+
+<style>
+
+html,body{
+    margin:0;
+    padding:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#000;
+    font-family:sans-serif;
+}
+
+canvas{
+    position:absolute;
+    inset:0;
+}
+
+#controls{
+    position:fixed;
+    top:15px;
+    left:15px;
+    z-index:100;
+    background:rgba(0,0,0,.65);
+    backdrop-filter:blur(10px);
+    border-radius:15px;
+    padding:15px;
+    color:white;
+}
+
+input{
+    width:250px;
+}
+
+</style>
+
+</head>
+<body>
+
+<div id="controls">
+
+<h3>Audio Reactor</h3>
+
+<input type="file" id="audioFile" accept="audio/*">
+
+<br><br>
+
+Volumen Reactividad
+
+<br>
+
+<input type="range" id="boost" min="1" max="5" value="2">
+
+</div>
+
+<canvas id="canvas"></canvas>
+
+<script>
+
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+function resize(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener("resize",resize);
+
+let audioCtx;
+let analyser;
+let source;
+let audio;
+
+const boostSlider = document.getElementById("boost");
+
+document
+.getElementById("audioFile")
+.addEventListener("change",e=>{
+
+    const file = e.target.files[0];
+
+    if(!file) return;
+
+    if(audio){
+        audio.pause();
+    }
+
+    audio = new Audio(URL.createObjectURL(file));
+    audio.loop = true;
+
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    analyser = audioCtx.createAnalyser();
+
+    analyser.fftSize = 512;
+
+    source = audioCtx.createMediaElementSource(audio);
+
+    source.connect(analyser);
+    analyser.connect(audioCtx.destination);
+
+    audio.play();
+
+});
+
+function draw(){
+
+    requestAnimationFrame(draw);
+
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    if(!analyser) return;
+
+    const data = new Uint8Array(analyser.frequencyBinCount);
+
+    analyser.getByteFrequencyData(data);
+
+    const cx = canvas.width/2;
+    const cy = canvas.height/2;
+
+    const radius = 150;
+
+    for(let i=0;i<data.length;i++){
+
+        const value = data[i];
+
+        const angle =
+            (i/data.length)*
+            Math.PI*
+            2;
+
+        const boost =
+            Number(boostSlider.value);
+
+        const length =
+            value*
+            boost;
+
+        const x1 =
+            cx+
+            Math.cos(angle)*radius;
+
+        const y1 =
+            cy+
+            Math.sin(angle)*radius;
+
+        const x2 =
+            cx+
+            Math.cos(angle)*(radius+length);
+
+        const y2 =
+            cy+
+            Math.sin(angle)*(radius+length);
+
+        const hue =
+            (i/data.length)*360;
+
+        ctx.strokeStyle =
+            `hsl(${hue},100%,60%)`;
+
+        ctx.lineWidth=3;
+
+        ctx.beginPath();
+
+        ctx.moveTo(x1,y1);
+        ctx.lineTo(x2,y2);
+
+        ctx.stroke();
+    }
+
+    ctx.beginPath();
+
+    ctx.arc(
+        cx,
+        cy,
+        radius-30,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fillStyle="white";
+
+    ctx.fill();
+
+}
+
+draw();
+
+</script>
+
+</body>
+</html>
