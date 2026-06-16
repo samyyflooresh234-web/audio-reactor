@@ -1,17 +1,27 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Audio Reactor 2.5</title>
 
-<link rel="stylesheet" href="style.css">
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width,initial-scale=1">
+
+<title>Audio Reactor 2.7</title>
+
+<link
+rel="stylesheet"
+href="style.css">
+
 </head>
+
 <body>
 
 <div id="panel">
 
-<h2>Audio Reactor</h2>
+<h2>Audio Reactor 2.7</h2>
 
 <input
 type="file"
@@ -38,6 +48,14 @@ Neural Network
 
 <option value="fireworks">
 Fireworks
+</option>
+
+<option value="spiral">
+Spiral
+</option>
+
+<option value="blackhole">
+Black Hole
 </option>
 
 </select>
@@ -70,8 +88,8 @@ Sensitivity
 type="range"
 id="sensitivity"
 min="1"
-max="6"
-value="2">
+max="10"
+value="3">
 
 </label>
 
@@ -83,13 +101,91 @@ Particles
 type="range"
 id="particles"
 min="100"
-max="1000"
-value="300">
+max="1500"
+value="500">
 
 </label>
 
+<label>
+
+Speed
+
+<input
+type="range"
+id="speed"
+min="1"
+max="20"
+value="5">
+
+</label>
+
+<label>
+
+Glow
+
+<input
+type="range"
+id="glow"
+min="0"
+max="100"
+value="30">
+
+</label>
+
+<label>
+
+Trail
+
+<input
+type="range"
+id="trail"
+min="1"
+max="100"
+value="15">
+
+</label>
+
+<label>
+
+Bass Boost
+
+<input
+type="range"
+id="bassBoost"
+min="1"
+max="10"
+value="4">
+
+</label>
+
+<label>
+
+Treble Boost
+
+<input
+type="range"
+id="trebleBoost"
+min="1"
+max="10"
+value="4">
+
+</label>
+
+<input
+type="file"
+id="bgImage"
+accept="image/*">
+
+<button id="hideUI">
+
+Hide UI
+
+</button>
+
 <button id="fullscreen">
+
 Fullscreen
+
 </button>
 
 </div>
@@ -99,4 +195,5 @@ Fullscreen
 <script src="app.js"></script>
 
 </body>
+
 </html>
