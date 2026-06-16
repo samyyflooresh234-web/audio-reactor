@@ -607,23 +607,41 @@ function rebuildParticles(){
 
     +
 
-    bands.bass;
+    bands.bass*0.10;
 
     const x=
     cx+
     Math.cos(
     t+
-    performance.now()/800
-    )*
-    r;
+    performance.now()
+
+    /
+
+    (
+    1200
+    /
+    speed
+    )
+
+)*
+r;
 
     const y=
     cy+
     Math.sin(
     t+
-    performance.now()/800
-    )*
-    r;
+    performance.now()
+
+    /
+
+    (
+    1200
+    /
+    speed
+    )
+
+)*
+r;
 
     const color=
     getThemeColor(
