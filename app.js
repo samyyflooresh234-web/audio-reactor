@@ -1135,12 +1135,19 @@ beatPulse;
         speedSlider.value
         );
 
-        const arms=4;
-
         const time=
 
-        performance.now()*0.00025*
+        performance.now()
+
+        *
+
+        0.00008
+
+        *
+
         speed;
+
+        const arms=4;
 
         for(
 
@@ -1180,7 +1187,7 @@ beatPulse;
         progress*
         (
         350+
-        bands.bass
+        bands.bass*0.10
         );
 
         const angle=
@@ -1319,62 +1326,113 @@ beatPulse;
 
         *
 
-        0.0002
+        0.00008
 
         *
 
         speed;
 
-        const orbitCount=3;
+        const pulse=
 
-        for(
+        beatPulse*
+        1.5;
 
-        let orbit=1;
-
-        orbit<=orbitCount;
-
-        orbit++
-
-        ){
-
-        const orbitRadius=
+        const globeRadius=
 
         centerSize
 
         +
 
-        orbit*50
+        90
 
         +
 
-        bands.bass*0.08;
+        bands.bass*0.05
+
+        +
+
+        pulse;
+
+        const orbitCount=4;
+
+        for(
+
+        let orbit=0;
+
+        orbit<orbitCount;
+
+        orbit++
+
+        ){
+
+        const tilt=
+
+        0.25+
+
+        orbit*0.18;
 
         ctx.beginPath();
 
         ctx.strokeStyle=
-        "rgba(255,255,255,.15)";
+        "rgba(255,255,255,.08)";
 
         ctx.lineWidth=1;
 
-        ctx.arc(
+        for(
 
-        cx,
-        cy,
+        let a=0;
 
-        orbitRadius,
+        a<=Math.PI*2;
 
-        0,
-        Math.PI*2
+        a+=0.05
 
-        );
+        ){
+
+        const x=
+
+        cx+
+
+        Math.cos(a)
+
+        *
+
+        globeRadius;
+
+        const y=
+
+        cy+
+
+        Math.sin(a)
+
+        *
+
+        globeRadius
+
+        *
+
+        tilt;
+
+        if(a===0){
+
+        ctx.moveTo(x,y);
+
+        }else{
+
+        ctx.lineTo(x,y);
+
+        }
+
+        }
 
         ctx.stroke();
+
+        }
 
         for(
 
         let i=0;
 
-        i<18;
+        i<160;
 
         i++
 
@@ -1382,25 +1440,35 @@ beatPulse;
 
         const angle=
 
-        (
-        Math.PI*2
-        /
-        18
-        )
+        (i/160)
 
         *
 
-        i
+        Math.PI*2
 
         +
 
+        time;
+
+        const depth=
+
+        Math.sin(
+        angle+
         time
+        );
 
+        const radius=
+
+        globeRadius
+
+        +
+
+        Math.sin(
+        i*0.2+
+        time
+        )
         *
-
-        orbit
-
-        ;
+        20;
 
         const x=
 
@@ -1412,7 +1480,7 @@ beatPulse;
 
         *
 
-        orbitRadius;
+        radius;
 
         const y=
 
@@ -1424,22 +1492,72 @@ beatPulse;
 
         *
 
-        orbitRadius;
+        radius
+
+        *
+
+        0.45;
+
+        const size=
+
+        2
+
+        +
+
+        (
+        depth+1
+        )
+        *
+        2
+
+        +
+
+        bands.highs/
+        120;
+
+        const alpha=
+
+        0.25
+
+        +
+
+        (
+        depth+1
+        )
+        /
+        2
+
+        *
+        0.75;
 
         const color=
 
         getThemeColor(
         i,
-        18,
+        160,
         bands
         );
 
-        applyGlow(
-        color
-        );
+        ctx.shadowColor=
+        color;
+
+        ctx.shadowBlur=
+        15+
+        size*3;
 
         ctx.fillStyle=
-        color;
+
+        color
+
+        .replace(
+        "rgb",
+        "rgba"
+        )
+
+        .replace(
+        ")",
+        `,`+alpha+`)`
+        );
 
         ctx.beginPath();
 
@@ -1448,17 +1566,7 @@ beatPulse;
         x,
         y,
 
-        2
-
-        +
-
-        bands.highs/
-        90
-
-        +
-
-        beatPulse/
-        12,
+        size,
 
         0,
         Math.PI*2
@@ -1469,13 +1577,11 @@ beatPulse;
 
         }
 
-        }
-
         for(
 
         let i=0;
 
-        i<particles.length/2;
+        i<40;
 
         i++
 
@@ -1483,27 +1589,29 @@ beatPulse;
 
         const angle=
 
-        Math.random()
-
-        *
-
-        Math.PI
-
-        *
-
-        2;
-
-        const radius=
-
-        centerSize
+        time*
+        2
 
         +
 
-        Math.random()
+        i;
 
+        const radius=
+
+        globeRadius
+
+        +
+
+        30
+
+        +
+
+        Math.sin(
+        i+
+        time
+        )
         *
-
-        220;
+        15;
 
         const x=
 
@@ -1511,7 +1619,7 @@ beatPulse;
 
         Math.cos(
         angle+
-        time
+        i
         )
 
         *
@@ -1524,18 +1632,22 @@ beatPulse;
 
         Math.sin(
         angle+
-        time
+        i
         )
 
         *
 
-        radius;
+        radius
+
+        *
+
+        0.55;
 
         const color=
 
         getThemeColor(
         i,
-        particles.length,
+        40,
         bands
         );
 
@@ -1553,16 +1665,12 @@ beatPulse;
         x,
         y,
 
-        1
-
-        +
-
-        Math.random()*2
+        1.5
 
         +
 
         bands.highs/
-        120,
+        180,
 
         0,
         Math.PI*2
