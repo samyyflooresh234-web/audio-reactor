@@ -1291,6 +1291,311 @@ beatPulse;
 
         }
 
+    function drawQuantumGlobe(
+        bands
+        ){
+
+        const cx=
+        canvas.width/2;
+
+        const cy=
+        canvas.height/2;
+
+        const centerSize=
+
+        Number(
+        centerSizeSlider.value
+        );
+
+        const speed=
+
+        Number(
+        speedSlider.value
+        );
+
+        const time=
+
+        performance.now()
+
+        *
+
+        0.0002
+
+        *
+
+        speed;
+
+        const orbitCount=3;
+
+        for(
+
+        let orbit=1;
+
+        orbit<=orbitCount;
+
+        orbit++
+
+        ){
+
+        const orbitRadius=
+
+        centerSize
+
+        +
+
+        orbit*50
+
+        +
+
+        bands.bass*0.08;
+
+        ctx.beginPath();
+
+        ctx.strokeStyle=
+        "rgba(255,255,255,.15)";
+
+        ctx.lineWidth=1;
+
+        ctx.arc(
+
+        cx,
+        cy,
+
+        orbitRadius,
+
+        0,
+        Math.PI*2
+
+        );
+
+        ctx.stroke();
+
+        for(
+
+        let i=0;
+
+        i<18;
+
+        i++
+
+        ){
+
+        const angle=
+
+        (
+        Math.PI*2
+        /
+        18
+        )
+
+        *
+
+        i
+
+        +
+
+        time
+
+        *
+
+        orbit
+
+        ;
+
+        const x=
+
+        cx+
+
+        Math.cos(
+        angle
+        )
+
+        *
+
+        orbitRadius;
+
+        const y=
+
+        cy+
+
+        Math.sin(
+        angle
+        )
+
+        *
+
+        orbitRadius;
+
+        const color=
+
+        getThemeColor(
+        i,
+        18,
+        bands
+        );
+
+        applyGlow(
+        color
+        );
+
+        ctx.fillStyle=
+        color;
+
+        ctx.beginPath();
+
+        ctx.arc(
+
+        x,
+        y,
+
+        2
+
+        +
+
+        bands.highs/
+        90
+
+        +
+
+        beatPulse/
+        12,
+
+        0,
+        Math.PI*2
+
+        );
+
+        ctx.fill();
+
+        }
+
+        }
+
+        for(
+
+        let i=0;
+
+        i<particles.length/2;
+
+        i++
+
+        ){
+
+        const angle=
+
+        Math.random()
+
+        *
+
+        Math.PI
+
+        *
+
+        2;
+
+        const radius=
+
+        centerSize
+
+        +
+
+        Math.random()
+
+        *
+
+        220;
+
+        const x=
+
+        cx+
+
+        Math.cos(
+        angle+
+        time
+        )
+
+        *
+
+        radius;
+
+        const y=
+
+        cy+
+
+        Math.sin(
+        angle+
+        time
+        )
+
+        *
+
+        radius;
+
+        const color=
+
+        getThemeColor(
+        i,
+        particles.length,
+        bands
+        );
+
+        applyGlow(
+        color
+        );
+
+        ctx.fillStyle=
+        color;
+
+        ctx.beginPath();
+
+        ctx.arc(
+
+        x,
+        y,
+
+        1
+
+        +
+
+        Math.random()*2
+
+        +
+
+        bands.highs/
+        120,
+
+        0,
+        Math.PI*2
+
+        );
+
+        ctx.fill();
+
+        }
+
+        ctx.shadowBlur=0;
+
+        ctx.fillStyle=
+        "black";
+
+        ctx.beginPath();
+
+        ctx.arc(
+
+        cx,
+        cy,
+
+        centerSize,
+
+        0,
+        Math.PI*2
+
+        );
+
+        ctx.fill();
+
+        }
+
     function detectBeat(
     bands
     ){
@@ -1442,6 +1747,14 @@ beatPulse;
         );
 
         break;
+
+case "quantum":
+
+    drawQuantumGlobe(
+    bands
+    );
+
+    break;
 
     case "blackhole":
 
